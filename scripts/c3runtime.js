@@ -3930,6 +3930,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Browser,
 		C3.Plugins.System.Cnds.OnLayoutStart,
 		C3.Plugins.System.Acts.SetVar,
+		C3.Plugins.Browser.Exps.QueryParam,
 		C3.Plugins.Arr.Acts.SetX,
 		C3.Plugins.Sprite.Acts.SetSize,
 		C3.Plugins.Sprite.Acts.SetBoolInstanceVar,
@@ -3941,9 +3942,6 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.video.Exps.PlaybackTime,
 		C3.Plugins.Sprite.Cnds.IsBoolInstanceVarSet,
 		C3.Plugins.System.Acts.GoToLayout,
-		C3.Plugins.Touch.Cnds.OnDoubleTapGesture,
-		C3.Plugins.AJAX.Acts.SetHeader,
-		C3.Plugins.AJAX.Acts.Post,
 		C3.Plugins.TextBox.Acts.SetCSSStyle,
 		C3.Plugins.TextBox.Acts.SetText,
 		C3.Plugins.System.Exps.mid,
@@ -3977,6 +3975,8 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Touch.Cnds.IsTouchingObject,
 		C3.Behaviors.Tween.Cnds.IsPlaying,
 		C3.Plugins.System.Acts.WaitForPreviousActions,
+		C3.Plugins.AJAX.Acts.SetHeader,
+		C3.Plugins.AJAX.Acts.Post,
 		C3.Plugins.System.Cnds.ForEachOrdered,
 		C3.Plugins.Sprite.Exps.X,
 		C3.Plugins.System.Acts.Wait,
@@ -4033,6 +4033,7 @@ self.C3_JsPropNameTable = [
 	{player_choices: 0},
 	{Browser: 0},
 	{text_choices: 0},
+	{user: 0},
 	{score: 0},
 	{L1_score: 0},
 	{i: 0},
@@ -4152,6 +4153,10 @@ function or(l, r)
 
 self.C3_ExpressionFuncs = [
 		() => 0,
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			return () => f0("user");
+		},
 		() => "2341",
 		() => 1,
 		() => "2134",
@@ -4172,17 +4177,6 @@ self.C3_ExpressionFuncs = [
 			return () => n0.ExpObject();
 		},
 		() => 21,
-		() => "Accept",
-		() => "application/json",
-		() => "Content-Type",
-		() => 99,
-		() => "sending",
-		() => "http://ec2-108-136-59-222.ap-southeast-3.compute.amazonaws.com/api/user/1/results",
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (and("{\"game_id\": 3,\"score\":", v0.GetValue()) + "}");
-		},
-		() => "POST",
 		() => "opacity",
 		() => "0",
 		p => {
@@ -4261,6 +4255,19 @@ self.C3_ExpressionFuncs = [
 			return () => ((((((v0.GetValue() + v1.GetValue()) + v2.GetValue()) + v3.GetValue()) + v4.GetValue()) + v5.GetValue()) + v6.GetValue());
 		},
 		() => "in",
+		() => "Accept",
+		() => "application/json",
+		() => "Content-Type",
+		() => "sending",
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			return () => (("https://bdc-results.kiqs.co/api/user/" + v0.GetValue()) + "/results");
+		},
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			return () => (and("{\"game_id\": 3,\"score\":", v0.GetValue()) + "}");
+		},
+		() => "POST",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => (0.125 * f0());
